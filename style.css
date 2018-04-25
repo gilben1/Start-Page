@@ -1,7 +1,7 @@
 @font-face {
 	font-family: 'fira';
-	src:  url('FiraCode-Retina.ttf') format('ttf'),
-	local('FiraCode-Retina');
+	src:  url('Input-Regular.ttf') format('ttf'),
+	local('Input-Regular');
 	font-style: normal;
 	font-weight: normal;
 }
@@ -24,14 +24,14 @@ html, body{
 }
 
 * {
-	font-family: 'fira';
+	font-family: 'input';
 	font-weight: lighter;
 }
 
 #container {
 	position: absolute;
 	padding: 0 20px 0 20px;
-	top: 35%;
+	top: 20%;
 	left: 0;
 	right: 0;
 	margin-left: auto;
