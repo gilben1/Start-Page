@@ -204,28 +204,22 @@ var destshort = {
   "xv6"     : "XV6 Book"
 };
 
-var pressed = [];
 var counter = 0;
 var cmds = 0;
-
-const CMDMAX = 6;
+var out = "";
 
 document.onkeydown = function(evt) {
   evt = evt || window.event;
 
-
   var i;
-  var out = "";
   var prefix = "";
   var postfix = "";
+
   if (cmds == 1){
     prefix = "Execute: ";
   }
 
-
-  if (keyCodes[evt.keyCode] == "escape") {
-    counter = 0;
-    pressed = [];
+  if (keyCodes[evt.keyCode] == "escape") { // escape => start entering a command
     if(cmds == 1){ // If we were already in command mode, turn it off
       cmds = 0;
       prefix = "";
@@ -234,22 +228,42 @@ document.onkeydown = function(evt) {
       cmds = 1;
       prefix = "Execute: ";
     }
+    out = "";
   }
   else if (cmds == 1){
     if (keyCodes[evt.keyCode] == "backspace / delete") { // If the key is a delete, remove last from array
-      pressed.pop();
-      counter--;
+      out = out.slice(0, -1);
     }
-    else {
-      pressed.push(evt.keyCode);
-      ++counter;
-    }
-
-    if (counter > 0) {
-      for (i = 0; i < counter; ++i) {
-        out += keyCodes[pressed[i]];
+    else if (keyCodes[evt.keyCode] == "right arrow") { // If the key is a right arrow, try and complete
+      for (var key in dests) {
+        if (key.indexOf(out) == 0) { // if we match from start, say so
+          out = key;
+        }
+        else if (key.includes(out)) { // if we match at all, also say so
+          out = key;
+        }
       }
+    }
+    else if (keyCodes[evt.keyCode] != "enter") {
+      out += keyCodes[evt.keyCode];
+    }
+    else { // try and run the command
+      var run = dests[out]; // grab destination from dests dictionary
+      if (run != null){ // If we grabbed a destination, open after waiting 0.5s
+        document.getElementById("keys").textContent="Going to " + run + "  (" + out + ")";
+        setTimeout(function() { window.open(run, "_self"); }, 500);
+        return;
+      }
+      else { // say we couldn't run what was entered
+        cmds = 0;
 
+        document.getElementById("keys").textContent="No destination for " + out;
+        setTimeout(function() { document.getElementById("keys").textContent=""; }, 500);
+        return;
+      }
+    }
+
+    if (out.length > 0) { // If we have a counter in the string, try and find completes
       for (var key in dests) {
         if (key.indexOf(out) == 0) { // if we match from start, say so
           postfix += " (" + key + " : " + destshort[key] + ") ";
@@ -257,23 +271,6 @@ document.onkeydown = function(evt) {
         else if (key.includes(out)) { // if we match at all, also say so
           postfix += " ~ (" + key + " : " + destshort[key] + ") ";
         }
-      }
-
-
-      var run = dests[out]; // grab destination from dests dictionary
-      if (run != null){ // If we grabbed a destination, open after waiting 0.5s
-        document.getElementById("keys").textContent="Going to " + run + "  (" + out + ")";
-        setTimeout(function() { window.open(run, "_self"); }, 500);
-        return;
-      }
-      else if(counter >= CMDMAX){ //If we hit the max for commands
-        counter = 0;
-        pressed = [];
-        cmds = 0;
-
-        document.getElementById("keys").textContent="No destination for " + out;
-        setTimeout(function() { document.getElementById("keys").textContent=""; }, 500);
-        return;
       }
     }
   }
