@@ -206,6 +206,7 @@ var destshort = {
 
 var counter = 0;
 var cmds = 0;
+var primed = 0;
 var out = "";
 
 document.onkeydown = function(evt) {
@@ -233,8 +234,9 @@ document.onkeydown = function(evt) {
   else if (cmds == 1){
     if (keyCodes[evt.keyCode] == "backspace / delete") { // If the key is a delete, remove last from array
       out = out.slice(0, -1);
+      primed = 0;
     }
-    else if (keyCodes[evt.keyCode] == "right arrow") { // If the key is a right arrow, try and complete
+    else if (keyCodes[evt.keyCode] == "right arrow" && primed == 0) { // If the key is a right arrow, try and complete
       for (var key in dests) {
         if (key.indexOf(out) == 0) { // if we match from start, say so
           out = key;
@@ -242,10 +244,12 @@ document.onkeydown = function(evt) {
         else if (key.includes(out)) { // if we match at all, also say so
           out = key;
         }
+        primed = 1;
       }
     }
-    else if (keyCodes[evt.keyCode] != "enter") {
+    else if (keyCodes[evt.keyCode] != "enter" && primed == 0) {
       out += keyCodes[evt.keyCode];
+      primed = 0;
     }
     else { // try and run the command
       var run = dests[out]; // grab destination from dests dictionary
@@ -263,7 +267,7 @@ document.onkeydown = function(evt) {
       }
     }
 
-    if (out.length > 0) { // If we have a counter in the string, try and find completes
+    if (out.length > 0) { // If we have a length in the string, try and find completes
       for (var key in dests) {
         if (key.indexOf(out) == 0) { // if we match from start, say so
           postfix += " (" + key + " : " + destshort[key] + ") ";
