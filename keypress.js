@@ -124,6 +124,7 @@ var counter = 0;
 var cmds = 0;
 var primed = 0;
 var out = "";
+var pretab = "";
 var automatch = [];
 var autoclose = [];
 var mcycle = 0;
@@ -159,6 +160,7 @@ document.onkeydown = function(evt) {
   else if (cmds == 1){ // if we are in command entering mode
     if (keyCodes[evt.keyCode] == "backspace / delete") { // If the key is a delete, remove last from array
       out = out.slice(0, -1);
+      pretab = out;
       // Wipe autocomps
       automatch = [];
       autoclose = [];
@@ -175,11 +177,13 @@ document.onkeydown = function(evt) {
     }
     else if (keyCodes[evt.keyCode] == "right arrow" && primed == 0) { // If the key is a right arrow, try and complete
       if (automatch.length > 0 && mcycle <= automatch.length - 1) {
+        prefix = "Execute: (" + pretab + ") ";
         out = automatch.pop();
         automatch.unshift(out);
         ++mcycle;
       }
       else if (autoclose.length > 0 && ccycle <= autoclose.length - 1) {
+        prefix = "Execute: (" + pretab + ") ";
         out = autoclose.pop();
         autoclose.unshift(out);
         ccycle++;
@@ -190,7 +194,10 @@ document.onkeydown = function(evt) {
       }
     }
     else if (keyCodes[evt.keyCode] != "enter" && primed == 0) {
-      out += keyCodes[evt.keyCode];
+      //out += keyCodes[evt.keyCode];
+      //pretab = out;
+      pretab += keyCodes[evt.keyCode];
+      out = pretab;
       // Wipe autocomps
       automatch = [];
       autoclose = [];
