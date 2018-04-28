@@ -160,8 +160,8 @@ document.onkeydown = function(evt) {
   }
   else if (cmds == 1){ // if we are in command entering mode
     if (keyCodes[evt.keyCode] == "backspace / delete") { // If the key is a delete, remove last from array
-      out = out.slice(0, -1);
-      pretab = out;
+      pretab = pretab.slice(0, -1);
+      out = pretab;
       // Wipe autocomps
       automatch = [];
       autoclose = [];
@@ -251,6 +251,7 @@ document.onkeydown = function(evt) {
           autoclose.push(key);
         }
       }
+
       primed = 0;
       mcycle = 0;
       ccycle = 0;
