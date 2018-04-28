@@ -7,7 +7,7 @@ var keyCodes = {
   27 : "escape",
   //32 : "spacebar",
   32 : " ",
-  //37 : "left arrow",
+  37 : "left arrow",
   //38 : "up arrow",
   39 : "right arrow",
   //40 : "down arrow",
@@ -154,6 +154,7 @@ document.onkeydown = function(evt) {
       prefix = "Execute: ";
     }
     out = "";
+    pretab = "";
     mcycle = 0;
     ccycle = 0;
   }
@@ -175,27 +176,67 @@ document.onkeydown = function(evt) {
       }
       primed = 0;
     }
-    else if (keyCodes[evt.keyCode] == "right arrow" && primed == 0) { // If the key is a right arrow, try and complete
+    else if (keyCodes[evt.keyCode] == "right arrow") { // If the key is a right arrow, try and complete
       if (automatch.length > 0 && mcycle <= automatch.length - 1) {
         prefix = "Execute: (" + pretab + ") ";
-        out = automatch.pop();
-        automatch.unshift(out);
-        ++mcycle;
+        if (primed == -1) {
+          out = automatch.shift();
+          automatch.push(out);
+        }
+        out = automatch.shift();
+        automatch.push(out);
+        mcycle++;
+
+        primed = 1;
       }
       else if (autoclose.length > 0 && ccycle <= autoclose.length - 1) {
         prefix = "Execute: (" + pretab + ") ";
-        out = autoclose.pop();
-        autoclose.unshift(out);
+        if (primed == -1) {
+          out = autoclose.shift();
+          autoclose.push(out);
+        }
+        out = autoclose.shift();
+        autoclose.push(out);
         ccycle++;
+
+        primed = 1;
       }
       if (ccycle > autoclose.length - 1) {
         ccycle = 0;
         mcycle = 0;
       }
     }
-    else if (keyCodes[evt.keyCode] != "enter" && primed == 0) {
-      //out += keyCodes[evt.keyCode];
-      //pretab = out;
+    else if (keyCodes[evt.keyCode] == "left arrow") { // If the key is a left arrow, go to the left autocomp
+      if (autoclose.length > 0 && ccycle > 0) {
+        prefix = "Execute: (" + pretab + ") ";
+        if (primed == 1) {
+          out = autoclose.pop();
+          autoclose.unshift(out);
+        }
+        out = autoclose.pop();
+        autoclose.unshift(out);
+        ccycle--;
+
+        primed = -1;
+      }
+      else if (automatch.length > 0 && mcycle > 0) {
+        prefix = "Execute: (" + pretab + ") ";
+        if (primed == 1) {
+          out = automatch.pop();
+          automatch.unshift(out);
+        }
+        out = automatch.pop();
+        automatch.unshift(out);
+        mcycle--;
+
+        primed = -1;
+      }
+      if (mcycle <= 0) {
+        mcycle = automatch.length - 1;
+        ccycle = autoclose.length - 1;
+      }
+    }
+    else if (keyCodes[evt.keyCode] != "enter") {
       pretab += keyCodes[evt.keyCode];
       out = pretab;
       // Wipe autocomps
@@ -204,10 +245,10 @@ document.onkeydown = function(evt) {
       // build autocomps
       for (var key in dests) {
         if (key.indexOf(out) == 0) {
-          automatch.unshift(key);
+          automatch.push(key);
         }
         else if (key.includes(out)) {
-          autoclose.unshift(key);
+          autoclose.push(key);
         }
       }
       primed = 0;

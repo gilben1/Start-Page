@@ -135,3 +135,7 @@ input 	{
 	width: 70%;
 	font-size: 14px;
 }
+
+div:empty {
+    display:none;
+}
