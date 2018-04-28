@@ -155,7 +155,7 @@ document.onkeydown = function(evt) {
   var i;
   var prefix = "";
   var match = "";
-  var close = "";
+  var close = "" ;
 
   if (cmds == 1){
     prefix = "Execute: ";
@@ -274,11 +274,13 @@ document.onkeydown = function(evt) {
 
     if (out.length > 0) { // If we have a length in the string, try and find completes
       if (automatch.length > 0) {
+        match = "== ";
         for (var m in automatch) {
           match += " (" + automatch[m] + " : " + destshort[automatch[m]] + ") ";
         }
       }
       if (autoclose.length > 0) {
+        close = "~= ";
         for (var c in autoclose) {
           close += " (" + autoclose[c] + " : " + destshort[autoclose[c]] + ") ";
         }
