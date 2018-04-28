@@ -130,6 +130,25 @@ var autoclose = [];
 var mcycle = 0;
 var ccycle = 0;
 
+
+// Wipes and builds the autocompletion
+function buildAutoComp() {
+  automatch = [];
+  autoclose = [];
+  // build autocomps
+  for (var key in dests) {
+    if (key.indexOf(out) == 0) { // if we match exactly from 0 onward
+      automatch.unshift(key);
+    }
+    else if (key.includes(out)) { // otherwise, if the substring is found anywhere in the key
+      autoclose.unshift(key);
+    }
+    else if (destshort[key].toLowerCase().includes(out)) { // otherwise, if the substring is found in the shortname
+      autoclose.unshift(key);
+    }
+  }
+}
+
 document.onkeydown = function(evt) {
   evt = evt || window.event;
 
@@ -162,18 +181,9 @@ document.onkeydown = function(evt) {
     if (keyCodes[evt.keyCode] == "backspace / delete") { // If the key is a delete, remove last from array
       pretab = pretab.slice(0, -1);
       out = pretab;
-      // Wipe autocomps
-      automatch = [];
-      autoclose = [];
-      // build autocomps
-      for (var key in dests) {
-        if (key.indexOf(out) == 0) {
-          automatch.unshift(key);
-        }
-        else if (key.includes(out)) {
-          autoclose.unshift(key);
-        }
-      }
+
+      buildAutoComp();
+
       primed = 0;
     }
     else if (keyCodes[evt.keyCode] == "right arrow") { // If the key is a right arrow, try and complete
@@ -236,21 +246,11 @@ document.onkeydown = function(evt) {
         ccycle = autoclose.length - 1;
       }
     }
-    else if (keyCodes[evt.keyCode] != "enter") {
+    else if (keyCodes[evt.keyCode] != "enter") { // adding a letter to the command
       pretab += keyCodes[evt.keyCode];
       out = pretab;
-      // Wipe autocomps
-      automatch = [];
-      autoclose = [];
-      // build autocomps
-      for (var key in dests) {
-        if (key.indexOf(out) == 0) {
-          automatch.push(key);
-        }
-        else if (key.includes(out)) {
-          autoclose.push(key);
-        }
-      }
+
+      buildAutoComp();
 
       primed = 0;
       mcycle = 0;
