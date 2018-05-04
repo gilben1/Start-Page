@@ -12,9 +12,11 @@ Default keybinds
 - `Escape` => open/close shell
 - `Enter` => activate command
 - `Right arrow` => tab complete right
-- 'Left Arrow` => tab complete left
+- `Left Arrow` => tab complete left
 - `Backspace` => delete a character
 
-`==` points to exact matches from the keyword entered (f ==> foo)
+```
+== points to exact matches from the keyword entered (f ==> foo)
 
-`~=` points to substring matches from the keyword entered (f ==> ofo)
+~= points to substring matches from the keyword entered (f ==> ofo)
+```
