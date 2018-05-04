@@ -87,48 +87,19 @@ var keyCodes = {
   193 : "?",
 };
 
-// Dictionary of destinations, matched by command string
-var dests = {
-  "gh"        : "https://github.com",
-  "gl"        : "https://gitlab.com",
-  "rph"       : "https://www.reddit.com/r/ProgrammerHumor/",
-  "rup"       : "https://www.reddit.com/r/unixporn/",
-  "d2l"       : "https://d2l.pdx.edu",
-  "ban"       : "https://banweb.pdx.edu",
-  "msl"       : "https://app.mystudylife.com/",
-  "slk"       : "https://pdx-cs.slack.com/messages",
-  "CS333hme"  : "http://web.cecs.pdx.edu/~markem/CS333/",
-  "CS333syl"  : "http://web.cecs.pdx.edu/~markem/CS333/syllabi/2018-02-006.pdf",
-  "CS333gui"  : "http://web.cecs.pdx.edu/~markem/CS333/handouts/guide",
-  "ostep"     : "http://pages.cs.wisc.edu/~remzi/OSTEP/",
-  "xv6"       : "http://web.cecs.pdx.edu/~markem/CS333/xv6/xv6-book-rev8.pdf",
-  "mail"      : "https://mail.google.com/mail/u/0/#inbox",
-  "cal"       : "https://calendar.google.com/calendar/r?tab=mc",
-  "drive"     : "https://drive.google.com/drive/my-drive",
-  "shrltx"    : "https://www.sharelatex.com/project",
-  "lnkdin"    : "https://www.linkedin.com/"
-};
+// These dictionaries can be defined in a file called
+// links.js
+if (typeof(dests) === 'undefined') {
+  var dests = {
+    "foo" : "http://google.com"
+  };
+}
+if (typeof(destshort) === 'undefined') {
+  var destshort = {
+    "foo" : "bar"
+  };
+}
 
-var destshort = {
-  "gh"        : "Github",
-  "gl"        : "Gitlab",
-  "rph"       : "/r/ProgrammerHumor/",
-  "rup"       : "/r/unixporn/",
-  "d2l"       : "D2L",
-  "ban"       : "Banweb",
-  "msl"       : "MyStudyLife",
-  "slk"       : "PDX-CS Slack",
-  "CS333hme"  : "CS333 Home",
-  "CS333syl"  : "CS333 Syllabus",
-  "CS333gui"  : "CS333 Survival Guide",
-  "ostep"     : "OSTEP Book",
-  "xv6"       : "XV6 Book",
-  "mail"      : "Gmail",
-  "cal"       : "Google Calendar",
-  "drive"     : "Google Drive",
-  "shrltx"    : "ShareLaTeX",
-  "lnkdin"    : "LinkedIn"
-};
 
 var counter = 0;
 var cmds = 0;
