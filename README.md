@@ -16,4 +16,5 @@ Default keybinds
 - `Backspace` => delete a character
 
 `==` points to exact matches from the keyword entered (f ==> foo)
+
 `~=` points to substring matches from the keyword entered (f ==> ofo)
