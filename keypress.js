@@ -1,3 +1,13 @@
+// Keybinds
+// Change these to value in the keyCodes dictionary you would like
+var activate = "escape";
+var send = "enter";
+var complete = "right arrow";
+var completeback = "left arrow";
+var del = "backspace / delete";
+
+// Keycodes dictionary initially grabbed and modified from
+// https://github.com/wesbos/keycodes
 var keyCodes = {
   8 : "backspace / delete",
   13 : "enter",
@@ -79,45 +89,45 @@ var keyCodes = {
 
 // Dictionary of destinations, matched by command string
 var dests = {
-  "gh"      : "https://github.com",
-  "gl"      : "https://gitlab.com",
-  "rph"     : "https://www.reddit.com/r/ProgrammerHumor/",
-  "rup"     : "https://www.reddit.com/r/unixporn/",
-  "d2l"     : "https://d2l.pdx.edu",
-  "ban"     : "https://banweb.pdx.edu",
-  "msl"     : "https://app.mystudylife.com/",
-  "slk"     : "https://pdx-cs.slack.com/messages",
-  "333hme"  : "http://web.cecs.pdx.edu/~markem/CS333/",
-  "333syl"  : "http://web.cecs.pdx.edu/~markem/CS333/syllabi/2018-02-006.pdf",
-  "333gui"  : "http://web.cecs.pdx.edu/~markem/CS333/handouts/guide",
-  "ostep"   : "http://pages.cs.wisc.edu/~remzi/OSTEP/",
-  "xv6"     : "http://web.cecs.pdx.edu/~markem/CS333/xv6/xv6-book-rev8.pdf",
-  "mail"    : "https://mail.google.com/mail/u/0/#inbox",
-  "cal"     : "https://calendar.google.com/calendar/r?tab=mc",
-  "drive"   : "https://drive.google.com/drive/my-drive",
-  "shrltx"  : "https://www.sharelatex.com/project",
-  "lnkdin"  : "https://www.linkedin.com/"
+  "gh"        : "https://github.com",
+  "gl"        : "https://gitlab.com",
+  "rph"       : "https://www.reddit.com/r/ProgrammerHumor/",
+  "rup"       : "https://www.reddit.com/r/unixporn/",
+  "d2l"       : "https://d2l.pdx.edu",
+  "ban"       : "https://banweb.pdx.edu",
+  "msl"       : "https://app.mystudylife.com/",
+  "slk"       : "https://pdx-cs.slack.com/messages",
+  "CS333hme"  : "http://web.cecs.pdx.edu/~markem/CS333/",
+  "CS333syl"  : "http://web.cecs.pdx.edu/~markem/CS333/syllabi/2018-02-006.pdf",
+  "CS333gui"  : "http://web.cecs.pdx.edu/~markem/CS333/handouts/guide",
+  "ostep"     : "http://pages.cs.wisc.edu/~remzi/OSTEP/",
+  "xv6"       : "http://web.cecs.pdx.edu/~markem/CS333/xv6/xv6-book-rev8.pdf",
+  "mail"      : "https://mail.google.com/mail/u/0/#inbox",
+  "cal"       : "https://calendar.google.com/calendar/r?tab=mc",
+  "drive"     : "https://drive.google.com/drive/my-drive",
+  "shrltx"    : "https://www.sharelatex.com/project",
+  "lnkdin"    : "https://www.linkedin.com/"
 };
 
 var destshort = {
-  "gh"      : "Github",
-  "gl"      : "Gitlab",
-  "rph"     : "/r/ProgrammerHumor/",
-  "rup"     : "/r/unixporn/",
-  "d2l"     : "D2L",
-  "ban"     : "Banweb",
-  "msl"     : "MyStudyLife",
-  "slk"     : "PDX-CS Slack",
-  "333hme"  : "CS333 Home",
-  "333syl"  : "CS333 Syllabus",
-  "333gui"  : "CS333 Survival Guide",
-  "ostep"   : "OSTEP Book",
-  "xv6"     : "XV6 Book",
-  "mail"    : "Gmail",
-  "cal"     : "Google Calendar",
-  "drive"   : "Google Drive",
-  "shrltx"  : "ShareLaTeX",
-  "lnkdin"  : "LinkedIn"
+  "gh"        : "Github",
+  "gl"        : "Gitlab",
+  "rph"       : "/r/ProgrammerHumor/",
+  "rup"       : "/r/unixporn/",
+  "d2l"       : "D2L",
+  "ban"       : "Banweb",
+  "msl"       : "MyStudyLife",
+  "slk"       : "PDX-CS Slack",
+  "CS333hme"  : "CS333 Home",
+  "CS333syl"  : "CS333 Syllabus",
+  "CS333gui"  : "CS333 Survival Guide",
+  "ostep"     : "OSTEP Book",
+  "xv6"       : "XV6 Book",
+  "mail"      : "Gmail",
+  "cal"       : "Google Calendar",
+  "drive"     : "Google Drive",
+  "shrltx"    : "ShareLaTeX",
+  "lnkdin"    : "LinkedIn"
 };
 
 var counter = 0;
@@ -163,7 +173,7 @@ document.onkeydown = function(evt) {
   if (keyCodes[evt.keyCode] == null) {
     return;
   }
-  else if (keyCodes[evt.keyCode] == "escape") { // escape => start entering a command
+  else if (keyCodes[evt.keyCode] == activate) { // escape => start entering a command
     if(cmds == 1){ // If we were already in command mode, turn it off
       cmds = 0;
       prefix = "";
@@ -178,7 +188,7 @@ document.onkeydown = function(evt) {
     ccycle = 0;
   }
   else if (cmds == 1){ // if we are in command entering mode
-    if (keyCodes[evt.keyCode] == "backspace / delete") { // If the key is a delete, remove last from array
+    if (keyCodes[evt.keyCode] == del) { // If the key is a delete, remove last from array
       pretab = pretab.slice(0, -1);
       out = pretab;
 
@@ -186,7 +196,7 @@ document.onkeydown = function(evt) {
 
       primed = 0;
     }
-    else if (keyCodes[evt.keyCode] == "right arrow") { // If the key is a right arrow, try and complete
+    else if (keyCodes[evt.keyCode] == complete) { // If the key is a right arrow, try and complete
       if (automatch.length > 0 && mcycle <= automatch.length - 1) {
         prefix = "Execute: (" + pretab + ") ";
         if (primed == -1) {
@@ -216,7 +226,7 @@ document.onkeydown = function(evt) {
         mcycle = 0;
       }
     }
-    else if (keyCodes[evt.keyCode] == "left arrow") { // If the key is a left arrow, go to the left autocomp
+    else if (keyCodes[evt.keyCode] == completeback) { // If the key is a left arrow, go to the left autocomp
       if (autoclose.length > 0 && ccycle > 0) {
         prefix = "Execute: (" + pretab + ") ";
         if (primed == 1) {
@@ -246,7 +256,7 @@ document.onkeydown = function(evt) {
         ccycle = autoclose.length - 1;
       }
     }
-    else if (keyCodes[evt.keyCode] != "enter") { // adding a letter to the command
+    else if (keyCodes[evt.keyCode] != send) { // adding a letter to the command
       pretab += keyCodes[evt.keyCode];
       out = pretab;
 
