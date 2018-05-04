@@ -20,3 +20,18 @@ Default keybinds
 
 ~= points to substring matches from the keyword entered (f ==> ofo)
 ```
+
+# Adding Links
+
+By default, there will be no link commands set in `keypress.js`. If you want to add your own commands, create two dictionaries in a file called `links.js`. `index.html` already includes `links.js`, so you just need to create it.     
+
+The format is as follows:
+```
+var dests = {
+  "command" : "https://link.com"
+ };
+ 
+ var destshort = {
+  "command" : "Link shortname"
+ };
+ ```
